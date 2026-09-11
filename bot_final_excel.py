@@ -9,6 +9,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from aiogram import Bot, Dispatcher, F, Router
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.filters import Command, CommandObject
 from aiogram.types import CallbackQuery, FSInputFile, InlineKeyboardButton, InlineKeyboardMarkup, Message
 from dotenv import load_dotenv
@@ -227,7 +229,7 @@ def parse_free_text(text: str):
     if amount is None:
         # Valyuta belgisi/nomi yonidagi raqam
         patterns = [
-            r'(\d[\d\s.,]*)\s*(?:\$|usd|dollar|doll)\b?',
+            r'(\d[\d\s.,]*)\s*(?:\$|usd\b|dollar\b|doll\b)',
             r'(\d[\d\s.,]*)\s*(?:uzs|so[\' ]?m|som)\b',
         ]
         for p in patterns:
@@ -776,7 +778,7 @@ async def report(message: Message, command: CommandObject):
 
 async def main():
     init_db()
-    bot = Bot(BOT_TOKEN)
+    bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
     dp.include_router(router)
     print("BOT ISHLAYAPTI. Bu oynani yopmang.")
