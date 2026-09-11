@@ -473,7 +473,7 @@ async def add_payment_command(message: Message, command: CommandObject, bot: Bot
     await save_and_send_payment(message, bot, amount, client, "UZS", None, comment, command.args)
 
 
-@router.message(F.text)
+@router.message(F.text & ~F.text.startswith("/"))
 async def free_text_payment(message: Message, bot: Bot):
     # Faqat guruhdagi oddiy xabarlarni tekshiramiz
     if message.chat.type not in ("group", "supergroup"):
